@@ -1,0 +1,11 @@
+# ninja log v5
+2	243	1711649541053636110	CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o	c1140b8858dd0757
+268	297	1711649541109190659	Ctemplate	d489d2738dcb4f0a
+0	31	1711650780015425491	build.ninja	4c95be23e90b6a04
+1	268	1711649541078277678	CMakeFiles/Ctemplate.dir/main.cpp.o	b34344eae88bc22a
+2	24	1711650862997550493	CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o	858ab110985b471d
+2	238	1711650863208714317	CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o	c1140b8858dd0757
+1	266	1711650863236670296	CMakeFiles/Ctemplate.dir/main.cpp.o	b34344eae88bc22a
+3	241	1711650945709123876	CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o	c1140b8858dd0757
+2	265	1711650945733080226	CMakeFiles/Ctemplate.dir/main.cpp.o	b34344eae88bc22a
+265	294	1711650945763192309	Ctemplate	6ab8db4a377fb411
