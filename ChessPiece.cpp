@@ -3,37 +3,31 @@
 //
 
 #include "ChessPiece.h"
-class ChessPiece {
 
-public:
+ChessPiece (*board)[8][8];
+vector<ChessPiece> playerPieces, computerPieces;
+bool playerWhite;
 
-    int x, y;
-    bool isWhite;
-    void generatePossibleMoves();
+void Rook::generatePossibleMoves() {
 
+}
 
-};
+void Bishop::generatePossibleMoves() {
 
-class Rook : ChessPiece {
+}
 
-};
+void Knight::generatePossibleMoves() {
 
-class Knight : ChessPiece {
+}
 
-};
+void Queen::generatePossibleMoves() {
 
-class Bishop : ChessPiece {
+}
 
-};
+void King::generatePossibleMoves() {
 
-class Queen : ChessPiece {
+}
 
-};
+void Pawn::generatePossibleMoves() {
 
-class King : ChessPiece {
-
-};
-
-class Pawn : ChessPiece {
-
-};
+}

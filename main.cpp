@@ -1,12 +1,14 @@
-#include <iostream>
 #include <vector>
 #include "PrintOutput.h"
+#include "ChessPiece.h"
 
 using namespace std;
 typedef long long ll;
 
 int main() {
 
-    printBoard();
+//    printBoard();
+//    Rook r;
+    printf("%s", "♔");
     return 0;
 }

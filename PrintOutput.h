@@ -4,6 +4,3 @@
 
 void printBoard();
 void setup();
-using namespace std;
-typedef long long ll;
-#include <iostream>

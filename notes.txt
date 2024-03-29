@@ -1,0 +1,18 @@
+//g++ *.cpp -lpthread -o output
+/*
+void above() {
+    pthread_t thread;
+    pthread_create(&thread, NULL, test, (void *) 0);
+    pthread_exit(NULL);
+}
+
+void *test(void *threadID) {
+    cout << "HELLO FROM " << (long long) threadID << endl;
+    pthread_exit(NULL);
+}
+
+//In the header file
+#include <pthread.h>
+void above();
+void * test(void *threadID);
+*/
