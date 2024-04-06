@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <set>
 using namespace std;
 typedef long long ll;
 class ChessPiece {
@@ -18,8 +19,9 @@ public:
     void generatePossibleMoves();
     bool attackingOtherPiece(short x, short y);
     char printFileTypeChar();
+    bool operator<(const ChessPiece &o) const;
     char32_t character;
-    enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING} pieceType;
+    enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE} pieceType = PieceType::NONE;
     void setup1(short x, short y, bool isWhite) {
         this->x = x;
         this->y = y;
@@ -29,7 +31,7 @@ public:
 
 extern ChessPiece *board[8][8];
 extern bool playerWhite;
-extern vector<ChessPiece> playerPieces, computerPieces;
+extern set<ChessPiece> playerPieces, computerPieces;
 extern short pawnMoves[2] = {1, -1};
 extern short endPoint[2] = {8, 0};
 extern short knightMoves[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};

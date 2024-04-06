@@ -19,6 +19,15 @@ bool King::underCheck(vector<ChessPiece> &otherPieces) {
     return false;
 }
 
+bool ChessPiece::operator<(const ChessPiece &o) const {
+
+    if(x != o.x) {
+        return x < o.x;
+    }
+
+    return y <= o.y;
+}
+
 void Rook::generatePossibleMoves() {
 
     short newX, newY;
