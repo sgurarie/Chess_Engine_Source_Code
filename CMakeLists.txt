@@ -7,4 +7,6 @@ add_executable(Ctemplate main.cpp
         PrintOutput.cpp
         PrintOutput.h
         ChessPiece.cpp
-        ChessPiece.h)
+        ChessPiece.h
+        cmake-build-debug/ChessMove.cpp
+        cmake-build-debug/ChessMove.h)

@@ -16,10 +16,11 @@ public:
     short x, y;
     bool isWhite;
     void generatePossibleMoves();
+    bool attackingOtherPiece(short x, short y);
     char printFileTypeChar();
     char32_t character;
     enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING} pieceType;
-    void setup1(ll x, ll y, bool isWhite) {
+    void setup1(short x, short y, bool isWhite) {
         this->x = x;
         this->y = y;
         this->isWhite = isWhite;
@@ -49,6 +50,7 @@ public:
     char printFileTypeChar() {
         return 'r';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 class Knight : public ChessPiece {
@@ -66,6 +68,7 @@ public:
     char printFileTypeChar() {
         return 'n';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 class Bishop : public ChessPiece {
@@ -83,6 +86,7 @@ public:
     char printFileTypeChar() {
         return 'b';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 class Queen : public ChessPiece {
@@ -100,11 +104,13 @@ public:
     char printFileTypeChar() {
         return 'q';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 class King : public ChessPiece {
 public:
     void generatePossibleMoves();
+    bool underCheck(vector<ChessPiece> &otherPieces);
     void setup(ll x, ll y, bool isWhite) {
         setup1(x, y, isWhite);
         if(isWhite) {
@@ -117,6 +123,7 @@ public:
     char printFileTypeChar() {
         return 'k';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 class Pawn : public ChessPiece {
@@ -136,6 +143,7 @@ public:
     char printFileTypeChar() {
         return 'p';
     };
+    bool attackingOtherPiece(short x, short y);
 };
 
 

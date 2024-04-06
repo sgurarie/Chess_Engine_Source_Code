@@ -67,6 +67,12 @@ build CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o: CXX_COMPILER__Ctemplate_unscann
   OBJECT_DIR = CMakeFiles/Ctemplate.dir
   OBJECT_FILE_DIR = CMakeFiles/Ctemplate.dir
 
+build CMakeFiles/Ctemplate.dir/ChessMove.cpp.o: CXX_COMPILER__Ctemplate_unscanned_Debug /Users/samgurarie/Documents/Hobby$ Projects/ChessEngine/cmake-build-debug/ChessMove.cpp || cmake_object_order_depends_target_Ctemplate
+  DEP_FILE = CMakeFiles/Ctemplate.dir/ChessMove.cpp.o.d
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/Ctemplate.dir
+  OBJECT_FILE_DIR = CMakeFiles/Ctemplate.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Ctemplate
@@ -75,7 +81,7 @@ build CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o: CXX_COMPILER__Ctemplate_unscann
 #############################################
 # Link the executable Ctemplate
 
-build Ctemplate: CXX_EXECUTABLE_LINKER__Ctemplate_Debug CMakeFiles/Ctemplate.dir/main.cpp.o CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o
+build Ctemplate: CXX_EXECUTABLE_LINKER__Ctemplate_Debug CMakeFiles/Ctemplate.dir/main.cpp.o CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o CMakeFiles/Ctemplate.dir/ChessMove.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3
   OBJECT_DIR = CMakeFiles/Ctemplate.dir
   POST_BUILD = :
