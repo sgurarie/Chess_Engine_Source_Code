@@ -17,6 +17,7 @@ public:
     bool castled = false;
     void makeMove();
     void undoMove();
+    void findEvaluation();
 };
 
 class ChessMoveTree {
@@ -79,7 +80,7 @@ class RootChessMoveTree {
     }
 
     bool playerMove(short x1, short y1, short x2, short y2) {
-        short result = playerMove(x1, y1, x2, y2);
+        short result = root->playerMove(x1, y1, x2, y2);
         if(result == -1) return false;
         advance(result);
         return true;

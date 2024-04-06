@@ -18,7 +18,7 @@ public:
     bool isWhite;
     void generatePossibleMoves();
     bool attackingOtherPiece(short x, short y);
-    char printFileTypeChar();
+    char const printFileTypeChar() const;
     bool operator<(const ChessPiece &o) const;
     char32_t character;
     enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE} pieceType = PieceType::NONE;
@@ -29,9 +29,11 @@ public:
     }
 };
 
-extern ChessPiece *board[8][8];
+extern const ChessPiece *board[8][8];
 extern bool playerWhite;
 extern set<ChessPiece> playerPieces, computerPieces;
+extern short pieceValue[7] = {563, 305, 333, 100, 950, -1, -1};
+extern short pawnCloseValue[7] = {0, 8, 15, 31, 62, 125, 250};
 extern short pawnMoves[2] = {1, -1};
 extern short endPoint[2] = {8, 0};
 extern short knightMoves[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};

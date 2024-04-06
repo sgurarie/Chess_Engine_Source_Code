@@ -29,7 +29,7 @@ void ChessMove::makeMove() {
     if(castled) {
 
         if(m2.x == 2) {
-            ChessPiece &rook = *board[m2.y][0];
+            ChessPiece rook = *board[m2.y][0];
 
             if(rook.isWhite == playerWhite) {
                 playerPieces.erase(rook);
@@ -44,7 +44,7 @@ void ChessMove::makeMove() {
             board[m2.y][0] = nullptr;
             board[m2.y][rook.x] = &rook;
         } else {
-            ChessPiece &rook = *board[m2.y][7];
+            ChessPiece rook = *board[m2.y][7];
 
             if(rook.isWhite == playerWhite) {
                 playerPieces.erase(rook);
@@ -87,7 +87,7 @@ void ChessMove::undoMove() {
     if(castled) {
 
         if(m2.x == 2) {
-            ChessPiece &rook = *board[m2.y][2];
+            ChessPiece rook = *board[m2.y][2];
             if(rook.isWhite == playerWhite) {
                 playerPieces.erase(rook);
                 rook.x = 0;
@@ -100,7 +100,7 @@ void ChessMove::undoMove() {
             board[m2.y][2] = nullptr;
             board[m2.y][rook.x] = &rook;
         } else {
-            ChessPiece &rook = *board[m2.y][5];
+            ChessPiece rook = *board[m2.y][5];
             if(rook.isWhite == playerWhite) {
                 playerPieces.erase(rook);
                 rook.x = 7;
@@ -114,6 +114,38 @@ void ChessMove::undoMove() {
             board[m2.y][rook.x] = &rook;
         }
     }
+}
 
+void ChessMove::findEvaluation() {
 
+    ll score = 0;
+    for(auto i = playerPieces.begin(); i != playerPieces.end(); i++) {
+        score -= pieceValue[(int) i->pieceType];
+        if(i->pieceType == ChessPiece::PieceType::PAWN) {
+            short index;
+            if(playerWhite) {
+                index = i->y - 1;
+            } else {
+                index = 6 - i->y;
+            }
+            score -= pawnCloseValue[index];
+        }
+    }
+
+    for(auto i = computerPieces.begin(); i != computerPieces.end(); i++) {
+        score += pieceValue[(int) i->pieceType];
+        if(i->pieceType == ChessPiece::PieceType::PAWN) {
+            short index;
+            if(playerWhite) {
+                index = i->y - 1;
+            } else {
+                index = 6 - i->y;
+            }
+            score += pawnCloseValue[index];
+        }
+    }
+
+    //add in attack protection score
+
+    evaluation = score;
 }

@@ -93,13 +93,13 @@ void loadFile(string const& file_name) {
             newPiece = (ChessPiece) newPieceIn;
         }
 
-        ChessPiece *ref;
+        const ChessPiece* ref;
         if(isWhite ^ playerWhite) {
-            computerPieces.push_back(newPiece);
-            ref = &computerPieces[computerPieces.size() - 1];
+            computerPieces.insert(newPiece);
+            ref = &*computerPieces.cbegin();
         } else {
-            playerPieces.push_back(newPiece);
-            ref = &playerPieces[computerPieces.size() - 1];
+            playerPieces.insert(newPiece);
+            ref = &*playerPieces.cbegin();
         }
 
         board[y][x] = ref;
@@ -110,7 +110,7 @@ void loadFile(string const& file_name) {
     input_stream.close();
 }
 
-void outPiece(ChessPiece *p, ofstream *writer) {
+void outPiece(const ChessPiece *p, ofstream *writer) {
 
 
     (*writer) << p->printFileTypeChar();
@@ -126,7 +126,7 @@ void saveFile(string const& file_name) {
         writer << "b\n";
     }
 
-    for(ll i = 0; i < computerPieces.size(); i++) {
+    for(auto i = computerPieces.begin(); i != computerPieces.end(); i++) {
 
         if(playerWhite) {
             writer << "b";
@@ -134,10 +134,10 @@ void saveFile(string const& file_name) {
             writer << "w";
         }
 
-        outPiece(&computerPieces[i], &writer);
+        outPiece(&*i, &writer);
     }
 
-    for(ll i = 0; i < playerPieces.size(); i++) {
+    for(auto i = playerPieces.begin(); i != playerPieces.end(); i++) {
 
         if(playerWhite) {
             writer << "w";
@@ -145,6 +145,10 @@ void saveFile(string const& file_name) {
             writer << "b";
         }
 
-        outPiece(&playerPieces[i], &writer);
+        outPiece(&*i, &writer);
     }
+}
+
+void playerMove() {
+
 }
