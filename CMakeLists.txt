@@ -9,4 +9,9 @@ add_executable(Ctemplate main.cpp
         ChessPiece.cpp
         ChessPiece.h
         ChessMove.cpp
-        ChessMove.h)
+        ChessMove.h
+        AI.cpp
+        AI.h
+        Bitboard.cpp
+        Bitboard.h
+)

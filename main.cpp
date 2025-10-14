@@ -1,14 +1,18 @@
-#include <vector>
 #include "PrintOutput.h"
-#include "ChessPiece.h"
+#include "Bitboard.h"
+
 
 using namespace std;
 typedef long long ll;
 
 int main() {
 
-//    printBoard();
-//    Rook r;
-    printf("%s", "♔");
-    return 0;
+    //playerMove();
+//    RookBitboard rook;
+//    rook.generateAllMoves();
+
+    BishopBitboard bishop;
+    bishop.generateAllMoves();
+
+    cout << "test";
 }
