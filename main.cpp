@@ -11,8 +11,30 @@ int main() {
 //    RookBitboard rook;
 //    rook.generateAllMoves();
 
+    double memUsage = getMemoryUsage() / 1000000.0;
     BishopBitboard bishop;
-    bishop.generateAllMoves();
+    bishop.generateAllMoves(true);
+    bishop.generateAllMoves(false);
 
-    cout << "test";
+    BishopBitboard rook;
+    rook.generateAllMoves(true);
+    rook.generateAllMoves(false);
+
+    KnightBitboard knight;
+    knight.generateAllMoves(true);
+    knight.generateAllMoves(false);
+
+    KingBitboard king;
+    king.generateAllMoves(true);
+    king.generateAllMoves(false);
+
+    WhitePawnBitboard whitePawn;
+    whitePawn.generateAllMoves(true);
+    whitePawn.generateAllMoves(false);
+
+    BlackPawnBitboard blackPawn;
+    blackPawn.generateAllMoves(true);
+    blackPawn.generateAllMoves(false);
+
+    cout << getMemoryUsage() / 1000000.0 - memUsage;
 }
