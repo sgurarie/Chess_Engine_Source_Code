@@ -14,4 +14,6 @@ add_executable(Ctemplate main.cpp
         AI.h
         Bitboard.cpp
         Bitboard.h
+        MoveGenerator.cpp
+        MoveGenerator.h
 )

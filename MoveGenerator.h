@@ -1,0 +1,122 @@
+//
+// Created by Sam Gurarie on 10/19/25.
+//
+
+#ifndef CTEMPLATE_MOVEGENERATOR_H
+#define CTEMPLATE_MOVEGENERATOR_H
+
+#include<iostream>
+#include<vector>
+#include<set>
+#include "Bitboard.h"
+
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+
+enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE} pieceType = PieceType::NONE;
+
+struct BitboardMove {
+    short x1, y1, x2, y2;
+    ull startBoard, endBoard;
+    PieceType piece;
+    bool isWhite;
+    ll currentLevel;
+    ll nextMoveLevel;
+};
+
+//size right now: 34 bytes, future size: 21 bytes
+//Keep the data as part of the struct with a fixed size array or
+// continue using vectors to store pointers to the next move
+//if fixed size array must account for upper bound: 14 * 2 (2 rooks) + 14 * 2 (2 bishops) + 14 * 2 (1 queen)
+// + 8 * 2 (2 knights) + 8 (king) + 4 * 8 (8 pawns) = 140; (NOT INCLUDING PROMOTIONS or CASTLING w/ rises to 302) 140 * 34 bytes = 4480 bytes or 140 * 21 = 2940 bytes
+// THIRD OPTION: use zoo dfs technique, won't work when we free memory though
+// FOURTH OPTION: linked list chain: store two pointers one to stay in the current level another for the start of the next level
+
+struct BasicChessPiece {
+    short x, y;
+    PieceType piece;
+    bool isWhite;
+
+    bool operator<(const BasicChessPiece &o) const {
+        if(x == o.x) {
+            if(y == o.y) {
+                return isWhite < o.isWhite;
+            }
+            return y < o.y;
+        }
+        return x < o.x;
+    }
+};
+
+
+
+struct BoardState {
+
+    bool playerWhite; //arrays of size 2; first index black, second index white
+    ull boardStates[2][6];
+    ull totalBoard[2];
+    set<BasicChessPiece> chessPieces;
+
+    bool advancedTwoPawnMove[2][8]; //en passant
+
+    bool firstRookKingMove[2];
+
+    ull pinnedPieces[2];
+    ull attackPattern[2];
+    ull generalAttackPattern[2]; //pieces don't block rook/bishop/queen movement to find pinned pieces
+};
+
+struct LinkedListNode {
+    ll freedMemory;
+    LinkedListNode* nextSpot;
+};
+
+
+class Arena {
+
+private:
+    vector<BitboardMove>* moveStorage;
+    ll size = 1e6;
+
+    LinkedListNode head;
+public:
+    Arena();
+};
+
+struct ReturnValueDoMove {
+    BasicChessPiece captured;
+    bool wasFirstMove, wasAdvancedTwo;
+    ull pinnedPieces;
+    ull attackPattern;
+    ull generalAttackPattern;
+};
+
+class MoveGenerator {
+
+private:
+    BoardState board;
+    Arena arena;
+    BishopBitboard bishop;
+    RookBitboard rook;
+    KnightBitboard knight;
+    KingBitboard king;
+    WhitePawnBitboard whitePawn;
+    BlackPawnBitboard blackPawn;
+    QueenBitboard queen;
+public:
+    MoveGenerator();
+    void recursiveMoveFunction(ll depth, bool whiteTurn);
+    ReturnValueDoMove doMove(BitboardMove &move);
+    void undoMove(BitboardMove &move, ReturnValueDoMove &returnValue);
+    void printChar(short i, short j);
+    void printBoard();
+};
+
+
+
+
+
+
+
+#endif //CTEMPLATE_MOVEGENERATOR_H

@@ -589,7 +589,7 @@ void WhitePawnBitboard::generateAllMoves(bool inclusive) {
                 if(!inclusive) {
                     mask |= ((1ull << ((7ull - (i + 1)) * 8ull + (7ull - j))));
                     limit.push_back({i + 1, j});
-                    if (i == 2ull) {
+                    if (i == 1ull) {
                         mask |= ((1ull << ((7ull - (i + 2)) * 8ull + (7ull - j))));
                         limit.push_back({i + 2, j});
                     }
@@ -630,7 +630,7 @@ void BlackPawnBitboard::generateAllMoves(bool inclusive) {
                 if(!inclusive) {
                     mask |= ((1ull << ((7ull - (i - 1)) * 8ull + (7ull - j))));
                     limit.push_back({i - 1, j});
-                    if (i == 5ull) {
+                    if (i == 6ull) {
                         mask |= ((1ull << ((7ull - (i - 2)) * 8ull + (7ull - j))));
                         limit.push_back({i - 2, j});
                     }
@@ -661,7 +661,7 @@ void BlackPawnBitboard::generateAllMoves(bool inclusive) {
 //Later this will get added to same team & other team exclusive moves
 
 
-pair<vector<vector<LegalMovesStore>*>, vector<vector<LegalMovesStore>*>> QueenBitboard::getMove(BishopBitboard bishop, RookBitboard rook, short x, short y, ull sameTeamMask, ull otherTeamMask) {
+pair<vector<vector<LegalMovesStore>*>, vector<vector<LegalMovesStore>*>> QueenBitboard::getMove(BishopBitboard &bishop, RookBitboard &rook, short x, short y, ull sameTeamMask, ull otherTeamMask) {
     return {bishop.getMove(x, y, sameTeamMask, otherTeamMask), rook.getMove(x, y, sameTeamMask, otherTeamMask)};
 }
 
@@ -699,7 +699,7 @@ pair<vector<LegalMovesStore>*, vector<LegalMovesStore>*> KingBitboard::getMove(s
 vector<vector<LegalMovesStore>*> WhitePawnBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask, ull otherPawns) {
     vector<vector<LegalMovesStore>*> returnValue = {movesInclusive[{positionMovesIncl[y][x] & otherTeamMask, x, y}],
             moves[{positionMoves[y][x] & (sameTeamMask | otherTeamMask), x, y}]};
-    if(y == 5) {
+    if(y == 4) {
         returnValue.push_back(movesInclusive[{positionMovesIncl[y - 1][x] & otherPawns, x, (short) (y - 1)}]); // en passant
     }
 

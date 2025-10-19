@@ -97,7 +97,7 @@ public:
 
 class QueenBitboard {
 public:
-    pair<vector<vector<LegalMovesStore>*>, vector<vector<LegalMovesStore>*>>  getMove(BishopBitboard bishop, RookBitboard rook, short x, short y, ull sameTeamMask, ull otherTeamMask);
+    pair<vector<vector<LegalMovesStore>*>, vector<vector<LegalMovesStore>*>>  getMove(BishopBitboard &bishop, RookBitboard &rook, short x, short y, ull sameTeamMask, ull otherTeamMask);
 };
 
 
