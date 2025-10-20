@@ -17,14 +17,8 @@ ll getMemoryUsage() {
 
 int main() {
 
-    //playerMove();
-//    RookBitboard rook;
-//    rook.generateAllMoves();
-
-    double memUsage = getMemoryUsage() / 1000000.0;
-
     MoveGenerator game;
-    cout << getMemoryUsage() / 1000000.0 - memUsage;
+    game.playGame();
 }
 
 

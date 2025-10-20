@@ -8,6 +8,9 @@
 #include<iostream>
 #include<vector>
 #include<set>
+#include <fstream>
+#include <sstream>
+#include <mach/mach.h>
 #include "Bitboard.h"
 
 using namespace std;
@@ -23,6 +26,7 @@ struct BitboardMove {
     bool isWhite;
     ll currentLevel;
     ll nextMoveLevel;
+    ll evaluation;
 };
 
 //size right now: 34 bytes, future size: 21 bytes
@@ -79,9 +83,14 @@ private:
     vector<BitboardMove>* moveStorage;
     ll size = 1e6;
 
-    LinkedListNode head;
+    LinkedListNode *head, *tail;
 public:
     Arena();
+    void addMove(BitboardMove &move);
+    void freeMoveChildren(ll index);
+    ll nextFreeIndex();
+    ll currentFreeIndex();
+    BitboardMove& getMove(ll index);
 };
 
 struct ReturnValueDoMove {
@@ -111,6 +120,9 @@ public:
     void undoMove(BitboardMove &move, ReturnValueDoMove &returnValue);
     void printChar(short i, short j);
     void printBoard();
+    void loadFile(string fileName);
+    void saveFile(string fileName);
+    void playGame();
 };
 
 
