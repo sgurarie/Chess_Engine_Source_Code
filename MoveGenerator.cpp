@@ -125,6 +125,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         BitboardMove parameter = {it->x, it->y, (*moves[i])[j].x, (*moves[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::ROOK], (*moves[i])[j].legalMovesBitboard, PieceType::ROOK, whiteTurn, nextSpot, -1, 0};
                         ReturnValueDoMove returnValue = doMove(parameter);
                         //eval
+                        arena.addMove(parameter);
                         recursiveMoveFunction(depth + 1, !whiteTurn);
                         undoMove(parameter, returnValue);
                     }
@@ -147,6 +148,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                     BitboardMove parameter = {it->x, it->y, (*moves.first)[i].x, (*moves.first)[i].y, board.boardStates[whiteTurn][(int) PieceType::KNIGHT], (*moves.first)[i].legalMovesBitboard, PieceType::KNIGHT, whiteTurn, nextSpot, -1, 0};
                     ReturnValueDoMove returnValue = doMove(parameter);
                     //eval
+                    arena.addMove(parameter);
                     recursiveMoveFunction(depth + 1, !whiteTurn);
                     undoMove(parameter, returnValue);
                 }
@@ -165,6 +167,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                     BitboardMove parameter = {it->x, it->y, (*moves.second)[i].x, (*moves.second)[i].y, board.boardStates[whiteTurn][(int) PieceType::KNIGHT], (*moves.second)[i].legalMovesBitboard, PieceType::KNIGHT, whiteTurn, nextSpot, -1, 0};
                     ReturnValueDoMove returnValue = doMove(parameter);
                     //eval
+                    arena.addMove(parameter);
                     recursiveMoveFunction(depth + 1, !whiteTurn);
                     undoMove(parameter, returnValue);
                 }
@@ -188,6 +191,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         BitboardMove parameter = {it->x, it->y, (*moves[i])[j].x, (*moves[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::BISHOP], (*moves[i])[j].legalMovesBitboard, PieceType::BISHOP, whiteTurn, nextSpot, -1, 0};
                         ReturnValueDoMove returnValue = doMove(parameter);
                         //eval
+                        arena.addMove(parameter);
                         recursiveMoveFunction(depth + 1, !whiteTurn);
                         undoMove(parameter, returnValue);
                     }
@@ -211,6 +215,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         BitboardMove parameter = {it->x, it->y, (*moves.first[i])[j].x, (*moves.first[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::QUEEN], (*moves.first[i])[j].legalMovesBitboard, PieceType::QUEEN, whiteTurn, nextSpot, -1, 0};
                         ReturnValueDoMove returnValue = doMove(parameter);
                         //eval
+                        arena.addMove(parameter);
                         recursiveMoveFunction(depth + 1, !whiteTurn);
                         undoMove(parameter, returnValue);
                     }
@@ -231,6 +236,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         BitboardMove parameter = {it->x, it->y, (*moves.second[i])[j].x, (*moves.second[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::QUEEN], (*moves.second[i])[j].legalMovesBitboard, PieceType::QUEEN, whiteTurn, nextSpot, -1, 0};
                         ReturnValueDoMove returnValue = doMove(parameter);
                         //eval
+                        arena.addMove(parameter);
                         recursiveMoveFunction(depth + 1, !whiteTurn);
                         undoMove(parameter, returnValue);
                     }
@@ -254,6 +260,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                     BitboardMove parameter = {it->x, it->y, (*moves.first)[i].x, (*moves.first)[i].y, board.boardStates[whiteTurn][(int) PieceType::KING], (*moves.first)[i].legalMovesBitboard, PieceType::KING, whiteTurn, nextSpot, -1, 0};
                     ReturnValueDoMove returnValue = doMove(parameter);
                     //eval
+                    arena.addMove(parameter);
                     recursiveMoveFunction(depth + 1, !whiteTurn);
                     undoMove(parameter, returnValue);
                 }
@@ -272,6 +279,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                     BitboardMove parameter = {it->x, it->y, (*moves.second)[i].x, (*moves.second)[i].y, board.boardStates[whiteTurn][(int) PieceType::KING], (*moves.second)[i].legalMovesBitboard, PieceType::KING, whiteTurn, nextSpot, -1, 0};
                     ReturnValueDoMove returnValue = doMove(parameter);
                     //eval
+                    arena.addMove(parameter);
                     recursiveMoveFunction(depth + 1, !whiteTurn);
                     undoMove(parameter, returnValue);
                 }
@@ -301,6 +309,7 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         BitboardMove parameter = {it->x, it->y, (*moves[i])[j].x, (*moves[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::PAWN], (*moves[i])[j].legalMovesBitboard, PieceType::PAWN, whiteTurn, nextSpot, -1, 0};
                         ReturnValueDoMove returnValue = doMove(parameter);
                         //eval
+                        arena.addMove(parameter);
                         recursiveMoveFunction(depth + 1, !whiteTurn);
                         undoMove(parameter, returnValue);
                     }
@@ -393,6 +402,17 @@ void MoveGenerator::loadFile(string fileName) {
     inputStream.close();
     string file_content = buffer.str();
     board.playerWhite = file_content[0] == 'w';
+
+    for(ll j = 0; j < 2; j++) {
+        board.firstRookKingMove[j] = file_content[1 + j] == 't';
+    }
+
+    for(ll j = 0; j < 2; j++) {
+        for (ll k = 0; k < 8; k++) {
+            board.advancedTwoPawnMove[j][k] = file_content[3 + j * 8 + k] == 't';
+        }
+    }
+
     ll i = 2;
     while(i < file_content.size()) {
 
@@ -400,8 +420,6 @@ void MoveGenerator::loadFile(string fileName) {
         char pieceT = file_content[i + 1];
         ll x = file_content[i + 2] - '0';
         ll y = file_content[i + 3] - '0';
-        bool firstMove = file_content[i + 4] == 't';
-        bool advancedTwo = file_content[i + 5] == 't';
 
         ull bitboardPosition = (1ull << ((7ull - y) * 8 + (7ull - x)));
         board.totalBoard[isWhite] |= bitboardPosition;
@@ -427,6 +445,196 @@ void MoveGenerator::loadFile(string fileName) {
                 pieceType = PieceType::PAWN;
                 break;
         }
+    }
+}
+
+void MoveGenerator::saveFile(string fileName) {
+    ofstream writer(fileName);
+    if(board.playerWhite) {
+        writer << "w";
+    } else {
+        writer << "b";
+    }
+
+    for(ll j = 0; j < 2; j++) {
+        if(board.firstRookKingMove[j]) {
+            writer << "t";
+        } else {
+            writer << "f";
+        }
+    }
+
+    for(ll j = 0; j < 2; j++) {
+        for (ll k = 0; k < 8; k++) {
+            if(board.advancedTwoPawnMove[j][k]) {
+                writer << "t";
+            } else {
+                writer << "f";
+            }
+        }
+    }
+
+    writer << endl;
+
+    for(auto i = board.chessPieces.begin(); i != board.chessPieces.end(); i++) {
+
+        if(i->isWhite) {
+            writer << "b";
+        } else {
+            writer << "w";
+        }
+
+        switch(i->piece) {
+            case PieceType::ROOK: //rook
+                writer << "r";
+                break;
+            case PieceType::KNIGHT: //knight
+                writer << "n";
+                break;
+            case PieceType::BISHOP: //bishop
+                writer << "b";
+                break;
+            case PieceType::QUEEN: //queen
+                writer << "q";
+                break;
+            case PieceType::KING: //king
+                writer << "k";
+                break;
+            default: //pawn
+                writer << "p";
+                break;
+        }
+
+        cout << i->x << i->y << endl;
+    }
+}
+
+ll getMemoryUsage() {
+    task_basic_info info;
+    mach_msg_type_number_t infoCount = TASK_BASIC_INFO_COUNT;
+    if (task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&info, &infoCount) != KERN_SUCCESS) {
+        return 0;
+    }
+    return info.resident_size; // bytes
+}
+
+bool notInRange(int num) {
+    return num < 0 || num > 7;
+}
+
+BitboardMove MoveGenerator::makeMoveFromChords(int x1, int y1, int x2, int y2, PieceType promotion) {
+    BitboardMove move;
+    move.isWhite = board.playerWhite;
+    move.x1 = x1;
+    move.y1 = y1;
+    move.x2 = x2;
+    move.y2 = y2;
+    move.piece = promotion;
+
+    move.startBoard = ((1ull << ((7ull - y1) * 8 + (7ull - x1))));
+    move.endBoard = ((1ull << ((7ull - y2) * 8 + (7ull - x2))));
+    return move;
+}
+
+void MoveGenerator::playGame() {
+    loadFile("StartingPositionBlack.txt");
+
+    while(true) {
+        cout << "Input Move: ";
+        string move;
+        while(move.empty()) { getline(cin, move); }
+        if(move[0] == 's') {
+            string name = move.substr(2, move.size() - 2);
+            saveFile(name);
+            continue;
+        } else if(move[0] == 'l') {
+            string name = move.substr(2, move.size() - 2);
+            loadFile(name);
+            continue;
+        } else if(move[0] == 'u') {
+            loadFile("LastMove.txt");
+            continue;
+        } else if(move[0] == 'm') {
+            cout << "Memory used: " << getMemoryUsage() / 1000000.0 << " MB" << endl;
+            continue;
+        } else if(move[0] == 'q') {
+            return;
+        } else {
+            saveFile("LastMove.txt");
+        }
+
+        if(move.size() != 5) {
+            cout << "Invalid input format\n";
+            continue;
+        }
+
+        int x1 = move[0] - 'a';
+        int y1 = move[1] - '1';
+        int x2 = move[3] - 'a';
+        int y2 = move[4] - '1';
+
+        if(notInRange(x1) || notInRange(y1) || notInRange(x2) || notInRange(y2)) {
+            cout << "Invalid input format\n";
+            continue;
+        }
+
+        PieceType pieceType = PieceType::NONE;
+        if(y2 == (board.playerWhite ? 7 : 0) && (board.boardStates[board.playerWhite][(int) PieceType::PAWN] & (1ull << ((7ull - y1) * (8 + 7ull - x1)))) > 0) {
+            while(true) {
+                cout << "Promote to (queen, rook, bishop, or knight)? ";
+                string answer; cin >> answer;
+                if (answer[0] == 'q') {
+                    pieceType = PieceType::QUEEN;
+                    break;
+                } else if (answer[0] == 'r') {
+                    pieceType = PieceType::ROOK;
+                    break;
+                } else if (answer[0] == 'b') {
+                    pieceType = PieceType::BISHOP;
+                    break;
+                } else if (answer[0] == 'k') {
+                    pieceType = PieceType::KNIGHT;
+                    break;
+                } else {
+                    cout << "Invalid input" << endl;
+                }
+            }
+        } else {
+            for(auto it = board.chessPieces.begin(); it != board.chessPieces.end(); it++) {
+                if(it->x == x1 && it->y == y1 && it->isWhite == board.playerWhite) pieceType = it->piece;
+            }
+        }
+
+        if(pieceType == PieceType::NONE) {
+            cout << "Invalid input" << endl;
+            continue;
+        }
+
+        BitboardMove playerMove = makeMoveFromChords(x1, y1, x2, y2, pieceType);
+        recursiveMoveFunction(1, board.playerWhite);
+        if(!arena.advanceMove(playerMove)) {
+            cout << "Not a legal move\n";
+            continue;
+        }
+
+        if(rootChessMoveTree.noNextMoves()) { //must check for stalemates
+            cout << R"(You won! You're very smart! 🔥 😎)";
+            return;
+        }
+
+        doMove(playerMove);
+
+        printBoard();
+        cout << "\nResult of your move. Evaluation: " << arena.getCurrentEvaluation() << "\n\n";
+
+        recursiveMoveFunction(1, !board.playerWhite);
+        if(rootChessMoveTree.noNextMoves()) {
+            cout << R"(GG 🧌)";
+            return;
+        }
+
+        printBoard();
+        cout << "\nResult of computer move. Evaluation: " << arena.getCurrentEvaluation() << "\n\n";
     }
 }
 
@@ -457,6 +665,34 @@ void Arena::addMove(BitboardMove &move) {
     }
     delete head;
     head = nextRef;
+}
+
+ll Arena::getCurrentEvaluation() {
+    return (*moveStorage)[startIndex].evaluation;
+}
+
+bool Arena::advanceMove(BitboardMove &move) {
+    ll index = startIndex;
+    ll nextIndex = -1;
+    while(index > -1) {
+        if((*moveStorage)[index] == move) {
+            nextIndex = (*moveStorage)[index].nextMoveLevel;
+            removeMove(index);
+        } else {
+            freeMoveChildren(index);
+        }
+
+        index = (*moveStorage)[index].currentLevel;
+    }
+
+    startIndex = nextIndex;
+    return nextIndex > -1;
+}
+
+void Arena::removeMove(ll index) {
+    tail->nextSpot = new LinkedListNode;
+    tail = tail->nextSpot;
+    tail->freedMemory = index;
 }
 
 void Arena::freeMoveChildren(ll index) {

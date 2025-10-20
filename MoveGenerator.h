@@ -27,6 +27,15 @@ struct BitboardMove {
     ll currentLevel;
     ll nextMoveLevel;
     ll evaluation;
+
+    bool operator==(const BitboardMove &other) const {
+        return x1 == other.x1
+        && x2 == other.x2
+        && y1 == other.y1
+        && y2 == other.y2
+        && pieceType == other.piece
+        && isWhite == other.isWhite;
+    }
 };
 
 //size right now: 34 bytes, future size: 21 bytes
@@ -84,13 +93,17 @@ private:
     ll size = 1e6;
 
     LinkedListNode *head, *tail;
+    ll startIndex = 0;
 public:
     Arena();
     void addMove(BitboardMove &move);
     void freeMoveChildren(ll index);
+    void removeMove(ll index);
     ll nextFreeIndex();
     ll currentFreeIndex();
+    bool advanceMove(BitboardMove &move);
     BitboardMove& getMove(ll index);
+    ll getCurrentEvaluation();
 };
 
 struct ReturnValueDoMove {
@@ -116,6 +129,7 @@ private:
 public:
     MoveGenerator();
     void recursiveMoveFunction(ll depth, bool whiteTurn);
+    BitboardMove makeMoveFromChords(int x1, int y1, int x2, int y2, PieceType promotion);
     ReturnValueDoMove doMove(BitboardMove &move);
     void undoMove(BitboardMove &move, ReturnValueDoMove &returnValue);
     void printChar(short i, short j);
