@@ -33,7 +33,7 @@ public:
 class CustomHashmap {
 
     ull size = 1'000;
-    vector<vector<pair<KeyStore, vector<LegalMovesStore>*>>> array;
+    vector<vector<pair<KeyStore, ull>>> array;
 
 public:
     CustomHashmap(ull newSize) {
@@ -45,11 +45,45 @@ public:
         array.resize(size);
     }
 
-    vector<LegalMovesStore>*& operator[](KeyStore element) {
+    ull& operator[](KeyStore element) {
         ull hashValue = element.elementMask;
         hashValue ^= (static_cast<unsigned long long>(element.x) & 0x7ull)
                      | ((static_cast<unsigned long long>(element.y) & 0x7ull) << 3)
                      |  ((static_cast<unsigned long long>(element.dir) & 0x7ull) << 6); //mix in position
+
+        hashValue += 0x9e3779b97f4a7c15ull;                 // add golden ratio constant
+        hashValue = (hashValue ^ (hashValue >> 30)) * 0xbf58476d1ce4e5b9ull;
+        hashValue = (hashValue ^ (hashValue >> 27)) * 0x94d049bb133111ebull;
+        hashValue = hashValue ^ (hashValue >> 31);
+        hashValue = hashValue % size;
+        for(auto & i : array[hashValue]) {
+            if (i.first == element) {
+                return i.second;
+            }
+        }
+        array[hashValue].emplace_back(element, 0);
+        return array[hashValue][array[hashValue].size() - 1].second;
+    }
+
+};
+
+class CustomHashmapToList {
+
+    ull size = 1'000;
+    vector<vector<pair<ull, vector<LegalMovesStore>*>>> array;
+
+public:
+    CustomHashmapToList(ull newSize) {
+        size = newSize;
+        array.resize(size);
+    }
+
+    CustomHashmapToList() {
+        array.resize(size);
+    }
+
+    vector<LegalMovesStore>*& operator[](ull element) {
+        ull hashValue = element;
 
         hashValue += 0x9e3779b97f4a7c15ull;                 // add golden ratio constant
         hashValue = (hashValue ^ (hashValue >> 30)) * 0xbf58476d1ce4e5b9ull;
@@ -75,7 +109,7 @@ public:
     static string stringBitBoard(ull board);
     static void printBitBoard(ull board);
     virtual void generateAllMoves(bool inclusive) = 0;
-    void setBoard(KeyStore element, vector<LegalMovesStore>* value) {
+    void setBoard(KeyStore element, ull value) {
         moves[element] = value;
     }
 };
