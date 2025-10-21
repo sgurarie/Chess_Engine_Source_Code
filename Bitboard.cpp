@@ -68,7 +68,6 @@ void RookBitboard::generateAllMoves(bool inclusive) {
 
             ull chord = (7ull - i) * 8ull + (7ull - j);
             for(ll incrementor = 0; incrementor < (1ull << (i + 1)); incrementor++) {
-                auto legalMoves = new vector<LegalMovesStore>();
 
                 ull mask = 0;
                 for(ull k = 0; k < i; k++) {
@@ -77,18 +76,19 @@ void RookBitboard::generateAllMoves(bool inclusive) {
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 0};
+                ull legalMovesBitboard = 0;
                 for (ull k = 0; k < i; k++) {
                     //up
                     chord += 8ull;
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
                     if (!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
+                        legalMovesBitboard |= (1ull << chord);
                         legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
                     }
 
                     if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
+                        legalMovesBitboard |= (1ull << chord);
                         legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
                         break;
                     }
@@ -103,14 +103,15 @@ void RookBitboard::generateAllMoves(bool inclusive) {
 
             chord = (7ull - i) * 8ull + (7ull - j);
             for(ll incrementor = 0; incrementor < (1ull << (7ull - i)); incrementor++) {
+
                 ull mask = 0;
-                auto legalMoves = new vector<LegalMovesStore>();
                 for(ull k = i + 1; k < 8ull; k++) {
                     if((incrementor & (1ull << (7ull - k))) == 0) continue;
                     mask |= (1ull << ((7ull - k) * 8ull + (7ull - j)));
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 1};
+                ull legalMovesBitboard = 0;
                 for (ull k = i + 1; k < 8ull; k++) {
                     //down
                     chord -= 8ull;
@@ -137,7 +138,7 @@ void RookBitboard::generateAllMoves(bool inclusive) {
 
             chord = (7ull - i) * 8ull + (7ull - j);
             for(ll incrementor = 0; incrementor < (1ull << (j + 1)); incrementor++) {
-                auto legalMoves = new vector<LegalMovesStore>();
+                ull legalMovesBitboard = 0;
                 ull leftIntersection = (firstLeft & incrementor) >> 7ull;
                 ull mask = leftIntersection << (8ull * (7ull - i) + j);
 
@@ -169,7 +170,7 @@ void RookBitboard::generateAllMoves(bool inclusive) {
             chord = (7ull - i) * 8ull + (7ull - j);
             for(ll incrementor = 0; incrementor < (1ull << (7ull - j)); incrementor++) {
 
-                auto legalMoves = new vector<LegalMovesStore>();
+                ull legalMovesBitboard = 0;
                 ull rightIntersection = (firstRight & incrementor) >> (7ull + j);
                 ull mask = rightIntersection << (8ull * (7ull - i));
                 KeyStore element = {mask, (short) j, (short) i, 3};
@@ -261,7 +262,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 ll newK = 0;
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
-                auto legalMoves = new vector<LegalMovesStore>();
+                ull legalMovesBitboard = 0;
                 ull mask = 0;
 
                 while (true) {
@@ -308,7 +309,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 ll newK = 0;
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
-                auto legalMoves = new vector<LegalMovesStore>();
+                ull legalMovesBitboard = 0;
                 ull mask = 0;
 
                 while (true) {
@@ -356,7 +357,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 ll newK = 0;
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
-                auto legalMoves = new vector<LegalMovesStore>();
+                ull legalMovesBitboard = 0;
                 ull mask = 0;
 
                 while (true) {
@@ -404,7 +405,6 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
                 ull mask = 0;
-                auto legalMoves = new vector<LegalMovesStore>();
                 ull legalMovesBitboard = 0;
 
                 while (true) {
@@ -467,6 +467,7 @@ void KnightBitboard::generateAllMoves(bool inclusive) {
             for (ull incrementor = 0; incrementor < (1ull << knightMoves.size()); incrementor++) {
 
                 ull legalMovesMask = 0;
+                ull legalMovesBitboard = 0;
                 for (ull k = 0; k < knightMoves.size(); k++) {
                     short newI = i + knightMoves[k].first, newJ = j + knightMoves[k].second;
                     if(newI < 0 || newI >= 8 || newJ < 0 || newJ >= 8) continue;

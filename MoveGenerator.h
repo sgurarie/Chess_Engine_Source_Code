@@ -76,11 +76,6 @@ struct BoardState {
     ull generalAttackPattern[2]; //pieces don't block rook/bishop/queen movement to find pinned pieces
 };
 
-struct LinkedListNode {
-    ll freedMemory;
-    LinkedListNode* nextSpot;
-};
-
 
 class Arena {
 

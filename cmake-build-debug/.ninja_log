@@ -1,21 +1,6 @@
 # ninja log v5
-5	518	1761005528453491569	CMakeFiles/Ctemplate.dir/MoveGenerator.cpp.o	417e0a86d9fca628
-4	397	1757351253751959833	CMakeFiles/Ctemplate.dir/AI.cpp.o	6480ab1cce014d18
-7	522	1761004239779718108	CMakeFiles/Ctemplate.dir/PrintOutput.cpp.o	1d53ece2d85103ae
-450	480	1760891460925355850	Ctemplate	4576c661a03803bb
-4	405	1761005614640566376	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
-6	384	1757351110049838992	CMakeFiles/Ctemplate.dir/ChessMove.cpp.o	97154c2b32ac6a85
-5	378	1757351391040381455	CMakeFiles/Ctemplate.dir/ChessPiece.cpp.o	b3c20b4587777159
-7	497	1761004239755416610	CMakeFiles/Ctemplate.dir/Bitboard.cpp.o	c632770be5859e35
-1	28	1761005662057747549	build.ninja	4c95be23e90b6a04
-0	50	1761005662057747549	build.ninja	4c95be23e90b6a04
-4	431	1761005761690918413	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
-4	514	1761005761775424941	CMakeFiles/Ctemplate.dir/MoveGenerator.cpp.o	417e0a86d9fca628
-4	419	1761005890045351898	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
-4	430	1761005902997644420	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
-4	511	1761005903078104907	CMakeFiles/Ctemplate.dir/MoveGenerator.cpp.o	417e0a86d9fca628
-4	420	1761005963994260212	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
-4	503	1761005964075536873	CMakeFiles/Ctemplate.dir/MoveGenerator.cpp.o	417e0a86d9fca628
-503	531	1761005964108050246	Ctemplate	18051662a6bb836d
 4	523	1761006188662544042	CMakeFiles/Ctemplate.dir/MoveGenerator.cpp.o	417e0a86d9fca628
+4	420	1761005963994260212	CMakeFiles/Ctemplate.dir/main.cpp.o	28d1a8e2cf344d42
 523	554	1761006188696638222	Ctemplate	18051662a6bb836d
+7	497	1761004239755416610	CMakeFiles/Ctemplate.dir/Bitboard.cpp.o	c632770be5859e35
+0	50	1761061087829419160	build.ninja	4c95be23e90b6a04
