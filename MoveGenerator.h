@@ -5,8 +5,6 @@
 #ifndef CTEMPLATE_MOVEGENERATOR_H
 #define CTEMPLATE_MOVEGENERATOR_H
 
-#include<iostream>
-#include<vector>
 #include<set>
 #include <fstream>
 #include <sstream>
@@ -17,7 +15,7 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 
-enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE} pieceType = PieceType::NONE;
+enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE};
 
 struct BitboardMove {
     short x1, y1, x2, y2;
@@ -33,7 +31,7 @@ struct BitboardMove {
         && x2 == other.x2
         && y1 == other.y1
         && y2 == other.y2
-        && pieceType == other.piece
+        && piece == other.piece
         && isWhite == other.isWhite;
     }
 };
@@ -43,8 +41,6 @@ struct BitboardMove {
 // continue using vectors to store pointers to the next move
 //if fixed size array must account for upper bound: 14 * 2 (2 rooks) + 14 * 2 (2 bishops) + 14 * 2 (1 queen)
 // + 8 * 2 (2 knights) + 8 (king) + 4 * 8 (8 pawns) = 140; (NOT INCLUDING PROMOTIONS or CASTLING w/ rises to 302) 140 * 34 bytes = 4480 bytes or 140 * 21 = 2940 bytes
-// THIRD OPTION: use zoo dfs technique, won't work when we free memory though
-// FOURTH OPTION: linked list chain: store two pointers one to stay in the current level another for the start of the next level
 
 struct BasicChessPiece {
     short x, y;
@@ -91,19 +87,17 @@ class Arena {
 private:
     vector<BitboardMove>* moveStorage;
     ll size = 1e6;
-
-    LinkedListNode *head, *tail;
     ll startIndex = 0;
 public:
     Arena();
     void addMove(BitboardMove &move);
-    void freeMoveChildren(ll index);
-    void removeMove(ll index);
-    ll nextFreeIndex();
-    ll currentFreeIndex();
+    ll nextFreeIndex() const;
+    ll currentFreeIndex() const;
     bool advanceMove(BitboardMove &move);
     BitboardMove& getMove(ll index);
     ll getCurrentEvaluation();
+    BitboardMove findOptimalMove();
+    bool hasNoMove();
 };
 
 struct ReturnValueDoMove {
@@ -137,6 +131,8 @@ public:
     void loadFile(string fileName);
     void saveFile(string fileName);
     void playGame();
+
+    ll getEvaluation();
 };
 
 
