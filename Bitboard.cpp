@@ -77,28 +77,20 @@ void RookBitboard::generateAllMoves(bool inclusive) {
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 0};
+                ull totalMovesBitboard = 0;
                 for (ull k = 0; k < i; k++) {
                     //up
                     chord += 8ull;
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if (!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             chord = (7ull - i) * 8ull + (7ull - j);
@@ -111,28 +103,20 @@ void RookBitboard::generateAllMoves(bool inclusive) {
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 1};
+                ull totalMovesBitboard = 0;
                 for (ull k = i + 1; k < 8ull; k++) {
                     //down
                     chord -= 8ull;
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if (!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             chord = (7ull - i) * 8ull + (7ull - j);
@@ -142,28 +126,21 @@ void RookBitboard::generateAllMoves(bool inclusive) {
                 ull mask = leftIntersection << (8ull * (7ull - i) + j);
 
                 KeyStore element = {mask, (short) j, (short) i, 2};
+                ull totalMovesBitboard = 0;
                 for (ull k = 0; k < j; k++) {
                     //left
                     chord++;
+
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if (!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             chord = (7ull - i) * 8ull + (7ull - j);
@@ -173,29 +150,22 @@ void RookBitboard::generateAllMoves(bool inclusive) {
                 ull rightIntersection = (firstRight & incrementor) >> (7ull + j);
                 ull mask = rightIntersection << (8ull * (7ull - i));
                 KeyStore element = {mask, (short) j, (short) i, 3};
+                ull totalMovesBitboard = 0;
 
                 for (ull k = j + 1ull; k < 8ull; k++) {
                     //right
                     chord--;
+
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if (!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
         }
     }
@@ -263,6 +233,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 ull chord = (7ull - i) * 8ull + (7ull - j);
                 auto legalMoves = new vector<LegalMovesStore>();
                 ull mask = 0;
+                ull totalMovesBitboard = 0;
 
                 while (true) {
                     newI--;
@@ -281,26 +252,17 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                     if(newI < 0 || newJ < 0) break;
 
                     chord += 8ull + 1ull;
-                    if((mask & (1ull << chord)) > 0 && !inclusive) break;
+                    if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if(!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 0};
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             for (ll incrementor = 0; incrementor < (1ull << k); incrementor++) {
@@ -309,6 +271,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
                 auto legalMoves = new vector<LegalMovesStore>();
+                ull totalMovesBitboard = 0;
                 ull mask = 0;
 
                 while (true) {
@@ -329,26 +292,17 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                     if(newI < 0 || newJ > 7) break;
 
                     chord += 8ull - 1ull;
-                    if((mask & (1ull << chord)) > 0 && !inclusive) break;
+                    if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if(!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 1};
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             for (ll incrementor = 0; incrementor < (1ull << k); incrementor++) {
@@ -357,6 +311,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 newI = i, newJ = j;
                 ull chord = (7ull - i) * 8ull + (7ull - j);
                 auto legalMoves = new vector<LegalMovesStore>();
+                ull totalMovesBitboard = 0;
                 ull mask = 0;
 
                 while (true) {
@@ -377,25 +332,17 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                     if(newI > 7 || newJ < 0) break;
 
                     chord -= 8ull - 1ull;
-                    if((mask & (1ull << chord)) > 0 && !inclusive) break;
+                    if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if(!inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
-                    if((mask & (1ull << chord)) > 0 && inclusive) {
-                        ull legalMovesBitboard = (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
+
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 2};
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
 
             for (ll incrementor = 0; incrementor < (1ull << k); incrementor++) {
@@ -405,7 +352,7 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                 ull chord = (7ull - i) * 8ull + (7ull - j);
                 ull mask = 0;
                 auto legalMoves = new vector<LegalMovesStore>();
-                ull legalMovesBitboard = 0;
+                ull totalMovesBitboard = 0;
 
                 while (true) {
                     newI++;
@@ -427,24 +374,15 @@ void BishopBitboard::generateAllMoves(bool inclusive) {
                     chord -= 8ull + 1ull;
                     if ((mask & (1ull << chord)) > 0 && !inclusive) break;
 
-                    if (!inclusive) {
-                        legalMovesBitboard |= (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                    }
+                    ull legalMovesBitboard = (1ull << chord);
+                    totalMovesBitboard |= (1ull << chord);
+                    legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
 
-                    if ((mask & (1ull << chord)) > 0 && inclusive) {
-                        legalMovesBitboard |= (1ull << chord);
-                        legalMoves->push_back({legalMovesBitboard, (short) (7 - chord / 8), (short) (7 - chord % 8)});
-                        break;
-                    }
+                    if ((mask & (1ull << chord)) > 0 && inclusive) break;
                 }
 
                 KeyStore element = {mask, (short) j, (short) i, 3};
-                if (inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, totalMovesBitboard, legalMoves, inclusive);
             }
         }
     }
@@ -488,11 +426,7 @@ void KnightBitboard::generateAllMoves(bool inclusive) {
                 }
 
                 KeyStore element = {legalMovesMask, (short) j, (short) i, 0};
-                if(inclusive) {
-                    movesInclusive[element] = legalMoves;
-                } else {
-                    moves[element] = legalMoves;
-                }
+                setBoard(element, legalMoves, inclusive);
             }
 
         }
@@ -537,42 +471,40 @@ void KingBitboard::generateAllMoves(bool inclusive) {
                 }
             }
             KeyStore element = {legalMovesMask, (short) j, (short) i, 0};
-            if(inclusive) {
-                movesInclusive[element] = legalMoves;
-            } else {
-                moves[element] = legalMoves;
-            }
+            setBoard(element, legalMoves, inclusive);
         }
     }
 }
 
-void addPawnValues(vector<pair<short, short>> &limit, ull i, ull j, Bitboard* board) {
-    ull legalMovesMask = 0;
+void addPawnValues(vector<pair<short, short>> &limit, ull i, ull j, bool inclusive, PawnBitboard* board) {
+    //ull legalMovesMask = 0;
 
     auto legalMoves = new vector<LegalMovesStore>();
-
+    ull legalMovesMask = 0;
 
     for (ull incrementor = 0; incrementor < (1ull << limit.size()); incrementor++) {
 
         bool blockedFirstMove = false;
+
         for (ull k = 0; k < limit.size(); k++) {
+
+            if(blockedFirstMove && j == limit[k].second) continue;
             if (((1ull << k) & incrementor) > 0) {
                 ull legalMovesBitboard = ((1ull << ((7ull - limit[k].first) * 8ull + (7ull - limit[k].second))));
                 legalMovesMask |= legalMovesBitboard;
+                legalMoves->push_back({legalMovesBitboard, limit[k].first, limit[k].second});
 
-                if(j != limit[k].second) {
-                    legalMoves->push_back({legalMovesBitboard, limit[k].first, limit[k].second});
-                } else {
-                    blockedFirstMove = true;
-                }
-            } else if(j == limit[k].second && !blockedFirstMove) {
+                if(limit[k].second == j) blockedFirstMove = true;
+            } else if(!inclusive) {
                 ull legalMovesBitboard = ((1ull << ((7ull - limit[k].first) * 8ull + (7ull - limit[k].second))));
                 legalMoves->push_back({legalMovesBitboard, limit[k].first, limit[k].second});
             }
+
         }
 
         KeyStore element = {legalMovesMask, (short) j, (short) i, 0};
-        board->setBoard(element, legalMoves);
+        board->setBoard(element, legalMoves, inclusive);
+
     }
 }
 
@@ -611,7 +543,7 @@ void WhitePawnBitboard::generateAllMoves(bool inclusive) {
 
             positionMoves[i][j] = mask;
             positionMovesIncl[i][j] = maskInc;
-            addPawnValues(limit, i, j, this);
+            addPawnValues(limit, i, j, inclusive, this);
         }
     }
 }
@@ -652,12 +584,11 @@ void BlackPawnBitboard::generateAllMoves(bool inclusive) {
 
             positionMoves[i][j] = mask;
             positionMovesIncl[i][j] = maskInc;
-            addPawnValues(limit, i, j, this);
+            addPawnValues(limit, i, j, inclusive, this);
         }
     }
 }
 
-//TODO: change move generation so that each axis is independent (performance improvement) and later for pinning
 //Later this will get added to same team & other team exclusive moves
 
 
@@ -666,51 +597,49 @@ pair<vector<vector<LegalMovesStore>*>, vector<vector<LegalMovesStore>*>> QueenBi
 }
 
 vector<vector<LegalMovesStore>*> BishopBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask) {
-    vector<vector<LegalMovesStore>*> array(8);
+    vector<vector<LegalMovesStore>*> array(4);
 
     for(ll i = 0; i < 4; i++) {
-        array[2 * i] = moves[{positionMoves[y][x][i] & sameTeamMask, x, y}];
-        array[2 * i + 1] = movesInclusive[{positionMoves[y][x][i] & otherTeamMask, x, y}];
+        array[i] = hashmapToList[moves[{positionMoves[y][x][i] & sameTeamMask, x, y}] & movesInclusive[{positionMoves[y][x][i] & otherTeamMask, x, y}]];
     }
     return array;
 }
 
 vector<vector<LegalMovesStore>*> RookBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask) {
-    vector<vector<LegalMovesStore>*> array(8);
+    vector<vector<LegalMovesStore>*> array(4);
 
     for(ll i = 0; i < 4; i++) {
-        array[2 * i] = moves[{positionMoves[y][x][i] & sameTeamMask, x, y}];
-        array[2 * i + 1] = movesInclusive[{positionMoves[y][x][i] & otherTeamMask, x, y}];
+        array[i] = hashmapToList[moves[{positionMoves[y][x][i] & sameTeamMask, x, y}] & movesInclusive[{positionMoves[y][x][i] & otherTeamMask, x, y}]];
     }
     return array;
 }
 
 pair<vector<LegalMovesStore>*, vector<LegalMovesStore>*> KnightBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask) {
-    return {movesInclusive[{positionMoves[y][x] & otherTeamMask, x, y}],
-            moves[{positionMoves[y][x] & sameTeamMask, x, y}]};
+    return {hashmapToListInc[{positionMoves[y][x] & otherTeamMask, x, y}],
+            hashmapToList[{positionMoves[y][x] & sameTeamMask, x, y}]};
 }
 
 pair<vector<LegalMovesStore>*, vector<LegalMovesStore>*> KingBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask) {
-    return {movesInclusive[{positionMoves[y][x] & otherTeamMask, x, y}],
-            moves[{positionMoves[y][x] & sameTeamMask, x, y}]};
+    return {hashmapToListInc[{positionMoves[y][x] & otherTeamMask, x, y}],
+            hashmapToList[{positionMoves[y][x] & sameTeamMask, x, y}]};
 }
 
 //We'll implement promotion in a higher level function
 vector<vector<LegalMovesStore>*> WhitePawnBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask, ull otherPawns) {
-    vector<vector<LegalMovesStore>*> returnValue = {movesInclusive[{positionMovesIncl[y][x] & otherTeamMask, x, y}],
-            moves[{positionMoves[y][x] & (sameTeamMask | otherTeamMask), x, y}]};
+    vector<vector<LegalMovesStore>*> returnValue = {hashmapToListInc[{positionMovesIncl[y][x] & otherTeamMask, x, y}],
+            hashmapToList[{positionMoves[y][x] & (sameTeamMask | otherTeamMask), x, y}]};
     if(y == 4) {
-        returnValue.push_back(movesInclusive[{positionMovesIncl[y - 1][x] & otherPawns, x, (short) (y - 1)}]); // en passant
+        returnValue.push_back(hashmapToListInc[{positionMovesIncl[y - 1][x] & otherPawns, x, (short) (y - 1)}]); // en passant
     }
 
     return returnValue;
 }
 
 vector<vector<LegalMovesStore>*> BlackPawnBitboard::getMove(short x, short y, ull sameTeamMask, ull otherTeamMask, ull otherPawns) {
-    vector<vector<LegalMovesStore>*> returnValue = {movesInclusive[{positionMovesIncl[y][x] & otherTeamMask, x, y}],
-                                                    moves[{positionMoves[y][x] & (sameTeamMask | otherTeamMask), x, y}]};
+    vector<vector<LegalMovesStore>*> returnValue = {hashmapToListInc[{positionMovesIncl[y][x] & otherTeamMask, x, y}],
+                                                    hashmapToList[{positionMoves[y][x] & (sameTeamMask | otherTeamMask), x, y}]};
     if(y == 3) {
-        returnValue.push_back(movesInclusive[{positionMovesIncl[y + 1][x] & otherPawns, x, (short) (y + 1)}]);
+        returnValue.push_back(hashmapToListInc[{positionMovesIncl[y + 1][x] & otherPawns, x, (short) (y + 1)}]);
     }
 
     return returnValue;
