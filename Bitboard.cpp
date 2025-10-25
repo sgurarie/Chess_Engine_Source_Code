@@ -477,7 +477,6 @@ void KingBitboard::generateAllMoves(bool inclusive) {
 }
 
 void addPawnValues(vector<pair<short, short>> &limit, ull i, ull j, bool inclusive, PawnBitboard* board) {
-    //ull legalMovesMask = 0;
 
     auto legalMoves = new vector<LegalMovesStore>();
     ull legalMovesMask = 0;
@@ -547,8 +546,6 @@ void WhitePawnBitboard::generateAllMoves(bool inclusive) {
         }
     }
 }
-
-//TODO: implement promotions
 
 void BlackPawnBitboard::generateAllMoves(bool inclusive) {
     for(ull i = 0; i < 8ull; i++) {

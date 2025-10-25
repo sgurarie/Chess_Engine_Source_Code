@@ -307,11 +307,23 @@ void MoveGenerator::recursiveMoveFunction(ll depth, bool whiteTurn) {
                         }
 
                         BitboardMove parameter = {it->x, it->y, (*moves[i])[j].x, (*moves[i])[j].y, board.boardStates[whiteTurn][(int) PieceType::PAWN], (*moves[i])[j].legalMovesBitboard, PieceType::PAWN, whiteTurn, nextSpot, -1, 0};
-                        ReturnValueDoMove returnValue = doMove(parameter);
-                        parameter.evaluation = getEvaluation();
-                        arena.addMove(parameter);
-                        recursiveMoveFunction(depth + 1, !whiteTurn);
-                        undoMove(parameter, returnValue);
+                        if((whiteTurn && it->y == 6) || (!whiteTurn && it->y == 1)) {
+                            for(int k = (int) PieceType::ROOK; k < (int) PieceType::QUEEN; k++) {
+                                parameter.piece = (PieceType) k;
+
+                                ReturnValueDoMove returnValue = doMove(parameter);
+                                parameter.evaluation = getEvaluation();
+                                arena.addMove(parameter);
+                                recursiveMoveFunction(depth + 1, !whiteTurn);
+                                undoMove(parameter, returnValue);
+                            }
+                        } else {
+                            ReturnValueDoMove returnValue = doMove(parameter);
+                            parameter.evaluation = getEvaluation();
+                            arena.addMove(parameter);
+                            recursiveMoveFunction(depth + 1, !whiteTurn);
+                            undoMove(parameter, returnValue);
+                        }
                     }
                 }
                 break;

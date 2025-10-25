@@ -15,7 +15,7 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 
-enum class PieceType {ROOK, KNIGHT, BISHOP, PAWN, QUEEN, KING, NONE};
+enum class PieceType {ROOK, KNIGHT, BISHOP, QUEEN, PAWN, KING, NONE};
 
 struct BitboardMove {
     short x1, y1, x2, y2;
