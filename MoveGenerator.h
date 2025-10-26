@@ -5,7 +5,6 @@
 #ifndef CTEMPLATE_MOVEGENERATOR_H
 #define CTEMPLATE_MOVEGENERATOR_H
 
-#include<set>
 #include <fstream>
 #include <sstream>
 #include <mach/mach.h>
@@ -58,14 +57,17 @@ struct BasicChessPiece {
     }
 };
 
-
+struct ChessPieceHolder {
+    BasicChessPiece chessPieces[2][6][10];
+    ull limitCap[2][6];
+};
 
 struct BoardState {
 
     bool playerWhite; //arrays of size 2; first index black, second index white
     ull boardStates[2][6];
     ull totalBoard[2];
-    set<BasicChessPiece> chessPieces;
+    ChessPieceHolder holder;
 
     bool advancedTwoPawnMove[2][8]; //en passant
 
@@ -76,6 +78,7 @@ struct BoardState {
     ull generalAttackPattern[2]; //pieces don't block rook/bishop/queen movement to find pinned pieces
 };
 
+void printOut(ofstream &writer, BasicChessPiece &i);
 
 class Arena {
 
@@ -101,6 +104,7 @@ struct ReturnValueDoMove {
     ull pinnedPieces;
     ull attackPattern;
     ull generalAttackPattern;
+    PieceType piece;
 };
 
 class MoveGenerator {
@@ -119,8 +123,8 @@ public:
     MoveGenerator();
     void recursiveMoveFunction(ll depth, bool whiteTurn);
     BitboardMove makeMoveFromChords(int x1, int y1, int x2, int y2, PieceType promotion);
-    ReturnValueDoMove doMove(BitboardMove &move);
-    void undoMove(BitboardMove &move, ReturnValueDoMove &returnValue);
+    ReturnValueDoMove doMove(BitboardMove &move, ll i);
+    void undoMove(BitboardMove &move, ReturnValueDoMove &returnValue, ll i);
     void printChar(short i, short j);
     void printBoard();
     void loadFile(string fileName);

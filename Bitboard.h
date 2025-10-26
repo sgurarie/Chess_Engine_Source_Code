@@ -119,8 +119,7 @@ public:
     vector<LegalMovesStore>*& operator[](KeyStore element) {
         ull hashValue = element.elementMask;
         hashValue ^= (static_cast<unsigned long long>(element.x) & 0x7ull)
-                     | ((static_cast<unsigned long long>(element.y) & 0x7ull) << 3)
-                     |  ((static_cast<unsigned long long>(element.dir) & 0x7ull) << 6); //mix in position
+                     | ((static_cast<unsigned long long>(element.y) & 0x7ull) << 3); //mix in position
 
         hashValue += 0x9e3779b97f4a7c15ull;                 // add golden ratio constant
         hashValue = (hashValue ^ (hashValue >> 30)) * 0xbf58476d1ce4e5b9ull;
@@ -132,7 +131,7 @@ public:
                 return i.second;
             }
         }
-        array[hashValue].emplace_back(element, new vector<LegalMovesStore>);
+        array[hashValue].emplace_back(element, nullptr);
         return array[hashValue][array[hashValue].size() - 1].second;
     }
 
@@ -145,7 +144,6 @@ public:
     static string stringBitBoard(ull board);
     static void printBitBoard(ull board);
     virtual void generateAllMoves(bool inclusive) = 0;
-
 
 };
 

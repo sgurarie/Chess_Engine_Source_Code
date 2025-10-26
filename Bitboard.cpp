@@ -478,25 +478,27 @@ void KingBitboard::generateAllMoves(bool inclusive) {
 
 void addPawnValues(vector<pair<short, short>> &limit, ull i, ull j, bool inclusive, PawnBitboard* board) {
 
-    auto legalMoves = new vector<LegalMovesStore>();
-    ull legalMovesMask = 0;
-
     for (ull incrementor = 0; incrementor < (1ull << limit.size()); incrementor++) {
 
+        auto legalMoves = new vector<LegalMovesStore>();
+        ull legalMovesMask = 0;
         bool blockedFirstMove = false;
 
         for (ull k = 0; k < limit.size(); k++) {
 
             if(blockedFirstMove && j == limit[k].second) continue;
             if (((1ull << k) & incrementor) > 0) {
+
                 ull legalMovesBitboard = ((1ull << ((7ull - limit[k].first) * 8ull + (7ull - limit[k].second))));
                 legalMovesMask |= legalMovesBitboard;
-                legalMoves->push_back({legalMovesBitboard, limit[k].first, limit[k].second});
+                if(inclusive) {
+                    legalMoves->push_back({legalMovesBitboard, limit[k].second, limit[k].first});
+                }
 
                 if(limit[k].second == j) blockedFirstMove = true;
             } else if(!inclusive) {
                 ull legalMovesBitboard = ((1ull << ((7ull - limit[k].first) * 8ull + (7ull - limit[k].second))));
-                legalMoves->push_back({legalMovesBitboard, limit[k].first, limit[k].second});
+                legalMoves->push_back({legalMovesBitboard, limit[k].second, limit[k].first});
             }
 
         }
@@ -540,8 +542,12 @@ void WhitePawnBitboard::generateAllMoves(bool inclusive) {
                 }
             }
 
-            positionMoves[i][j] = mask;
-            positionMovesIncl[i][j] = maskInc;
+            if(inclusive) {
+                positionMovesIncl[i][j] = maskInc;
+            } else {
+                positionMoves[i][j] = mask;
+            }
+
             addPawnValues(limit, i, j, inclusive, this);
         }
     }
@@ -579,8 +585,11 @@ void BlackPawnBitboard::generateAllMoves(bool inclusive) {
                 }
             }
 
-            positionMoves[i][j] = mask;
-            positionMovesIncl[i][j] = maskInc;
+            if(inclusive) {
+                positionMovesIncl[i][j] = maskInc;
+            } else {
+                positionMoves[i][j] = mask;
+            }
             addPawnValues(limit, i, j, inclusive, this);
         }
     }
